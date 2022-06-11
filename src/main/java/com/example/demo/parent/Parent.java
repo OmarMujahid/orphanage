@@ -1,68 +1,62 @@
-package com.example.demo.Orphan;
+package com.example.demo.parent;
 
-import com.example.demo.parent.Parent;
+import com.example.demo.Orphan.Orphan;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
 @Entity
-@Table
-public class Orphan {
+    @Table
+    public class Parent {
     @Id
     @SequenceGenerator(
-            name = "orphan_sequence",
-            sequenceName = "orphan_sequence",
+            name = "parent_sequence",
+            sequenceName = "parent_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "orphan_sequence"
+            generator = "parent_sequence"
     )
     private Integer ID;
-    private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "parent")
+    private Set<Orphan> parentOrphans = new HashSet<>();
+
+
+    private String Parentname;
     private String FatherName;
     private String MotherName;
     private LocalDate dob;
-    private LocalDate fdod;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    private Parent parent;
-
-    public Parent getParent() {
-        return parent;
-    }
-
     @Override
     public String toString() {
         return "Orphan{" +
-                "name=" + name +
+                "name=" + Parentname +
                 ", FatherName=" + FatherName +
                 ", MotherName=" + MotherName +
                 ", dob=" + dob +
-                ", fdod=" + fdod +
                 '}';
     }
 
-    public Orphan() {
+    public Parent() {
     }
 
-    public Orphan(String name, String fatherName, String motherName, LocalDate dob, LocalDate fdod) {
-        this.name = name;
+    public Parent(String name, String fatherName, String motherName, LocalDate dob) {
+        this.Parentname = name;
         FatherName = fatherName;
         MotherName = motherName;
         this.dob = dob;
-        this.fdod = fdod;
     }
 
     public String getName() {
-        return name;
+        return Parentname;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Parentname = name;
     }
 
     public String getFatherName() {
@@ -89,13 +83,6 @@ public class Orphan {
         this.dob = dob;
     }
 
-    public LocalDate getFdod() {
-        return fdod;
-    }
-
-    public void setFdod(LocalDate fdod) {
-        this.fdod = fdod;
-    }
     public Integer getID() {
         return ID;
     }
@@ -104,7 +91,9 @@ public class Orphan {
         this.ID = ID;
     }
 
-    public void assignToParent(Parent parent) {
-        this.parent = parent;
+
+    public Set<Orphan> getParentOrphans() {
+        return parentOrphans;
     }
+
 }

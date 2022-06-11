@@ -2,6 +2,7 @@ package com.example.demo.Orphan;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import static java.time.Month.*;
 @Configuration
 public class OrphanConfig {
     @Bean
-    CommandLineRunner commandLineRunner(OrphanRepo orphanRepo){
+    CommandLineRunner commandLineRunner1(OrphanRepo orphanRepo){
         return args -> {
             Orphan X = new Orphan(
                     "A",
